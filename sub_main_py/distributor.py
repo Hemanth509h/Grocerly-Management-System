@@ -11,7 +11,7 @@ distributor_bp = Blueprint('distributor', __name__)
 app = Flask(__name__)
 app.secret_key = "12345789789456123"
 # MongoDB setup 
-client = MongoClient("mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
+client = MongoClient("mongodb+srv://@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
 db = client["myLoginDatabase"]
 productDB = client["grocery_store"]
 users_collection = db["users"]
