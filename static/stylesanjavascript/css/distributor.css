@@ -229,7 +229,7 @@ hr {
     position: fixed;
     z-index: 1;
     left: 50%;
-    top: 120px;
+    top: 30px;
     font-size: 17px;
     transform: translateX(-50%);
 }
@@ -586,7 +586,7 @@ h1 {
         display: flex;
         margin-top: 30px;
         padding: 0 10px;
-        height: 450px;
+        height: 530px;
         flex-wrap: nowrap;
         border-radius: 10%;
     }

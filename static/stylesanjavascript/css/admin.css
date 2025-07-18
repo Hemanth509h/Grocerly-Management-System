@@ -200,7 +200,7 @@ button:hover {
     position: fixed;
     z-index: 1000;
     left: 50%;
-    top: 50px;
+    top: 30px;
     transform: translateX(-50%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     opacity: 0;
@@ -843,6 +843,7 @@ input[type="button"]:active,
         flex-direction: row;
         justify-content: center;
         border-radius: 10%;
+        height: 530px;
 
     }
 

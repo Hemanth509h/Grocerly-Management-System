@@ -1,4 +1,4 @@
-﻿﻿/* styles.css */
+﻿﻿﻿/* styles.css */
 :root {
     --primary-color: #8affa3;
     --primary-color-dark: #5cb85c;
@@ -279,7 +279,7 @@ hr#profile-hr {
     position: fixed;
     z-index: 1000;
     left: 50%;
-    top: 50px;
+    top: 30px;
     transform: translateX(-50%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     opacity: 0;
