@@ -19,6 +19,47 @@
     --gradient: linear-gradient(270deg, #121212, #272727, #121212);
 }
 
+.skeleton,.skeleton1{
+  border-radius: 30px;
+  min-height: 16px;
+  width: 100%;
+  background: var(--gradient);
+  background-size: 600% 600%;
+  animation: skeleton-loading 1.5s linear infinite alternate;
+}
+.skeleton-img {
+  width: 1600px;
+  height: 255px;
+  background: var(--gradient);
+  border-radius: 30px;
+  background-size: 600% 600%;
+  animation: skeleton-loading 1.5s linear infinite alternate;
+}
+.skeleton-img1 {
+  width: 430px;
+  height: 230px;
+  background: var(--gradient);
+  border-radius: 8px;
+  background-size: 600% 600%;
+  animation: skeleton-loading 1.5s linear infinite alternate;
+}
+@keyframes skeleton-loading {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+
+
 body {
     background-color: var(--bg-color);
     display: flex;
@@ -247,6 +288,7 @@ hr {
     padding: 5px;
     border-radius: 20px;
     margin-top: 30px;
+    border: 1px solid var(--primary-color);
 }
 
 input[type="checkbox"] {
@@ -521,6 +563,12 @@ h1 {
 
     #search {
         width: 50%;
+    }
+
+
+    .skeleton-img{
+        width: 300px;
+        height: 335px;
     }
 
     button {

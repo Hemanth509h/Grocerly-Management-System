@@ -1,4 +1,57 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+﻿// --- Universal Internet Connection Monitor ---
+function showOfflineOverlay(message = "No Internet Connection") {
+    let overlay = document.getElementById("offline-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "offline-overlay";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "rgba(30,30,30,0.98)";
+        overlay.style.color = "#fff";
+        overlay.style.zIndex = "99999";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
+        overlay.style.fontSize = "2rem";
+        overlay.innerHTML = `<span style="font-size:3rem;margin-bottom:20px; color:#8affa3">&#9888;</span><div style=" color:#8affa3">${message}</div><div style="font-size:1rem;margin-top:20px; color:#8affa3">Please check your internet connection.</div>`;
+        document.body.appendChild(overlay);
+    } else {
+        overlay.style.display = "flex";
+    }
+    // Optionally, disable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = true;
+        el.style.pointerEvents = "none";
+    });
+}
+function hideOfflineOverlay() {
+    const overlay = document.getElementById("offline-overlay");
+    if (overlay) overlay.style.display = "none";
+    // Re-enable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = false;
+        el.style.pointerEvents = "";
+    });
+}
+function checkOnlineStatus() {
+    if (!navigator.onLine) {
+        showOfflineOverlay();
+    } else {
+        hideOfflineOverlay();
+    }
+}
+window.addEventListener('online', checkOnlineStatus);
+window.addEventListener('offline', checkOnlineStatus);
+// On page load
+document.addEventListener("DOMContentLoaded", checkOnlineStatus);
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
     username = document.getElementById("usernameforplaceorder").textContent.trim();
     if (username == "") {
         window.location.href = "/";
@@ -18,6 +71,7 @@
     });
     let lastOrderCount = 0;
     function fetchOrders() {
+        showProductSkeletons();
         fetch("/distributor/get_orders", {
             method: "POST",
             headers: {
@@ -91,6 +145,7 @@
             });
     }
     function todayorders() {
+        showProductSkeletons();
         fetch("/distributor/TodayOrders", {
             method: "POST",
             headers: {
@@ -255,11 +310,14 @@
                 showToast("Logout failed. Please try again.", "error");
             });
     });
+
+
     // Complaints
     const complaintsButton = document.getElementById("complaints");
     const complaintList = document.getElementById("order-list");
     complaintsButton.addEventListener("click", async () => {
         complaintList.innerHTML = ""; // Clear list before adding new content
+        showProductSkeletons1() 
         try {
             const response = await fetch("/distributor/get_complaints", {
                 method: "POST",
@@ -273,7 +331,11 @@
                 showToast("Failed to fetch complaints: " + (data.message || ""), "error");
                 return;
             }
+
             const complaints = data.complaints || [];
+            const orderList = document.getElementById("order-list");
+            orderList.innerHTML = "";
+
             // Add heading
             const heading = document.getElementById("h1");
             heading.textContent = "Complaints";
@@ -304,6 +366,9 @@
         }
     });
 });
+
+
+
 // Search functionality
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("search").addEventListener("input", function () {
@@ -371,3 +436,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
 });
+
+function showProductSkeletons() {
+    const area = document.getElementById("order-list");
+    area.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+        area.innerHTML += `
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton" style="width:70%;height:22px;margin:8px 0"></div>
+        <div class="skeleton" style="width:40%;height:16px;"></div>
+      </div>
+    `;
+    }
+}
+function showProductSkeletons1() {
+    const area = document.getElementById("order-list");
+    area.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+        area.innerHTML += `
+      <div class="product-skeleton1">
+        <div class="skeleton1 skeleton-img1"></div>
+        <div class="skeleton1" style="width:70%;height:22px;margin:8px 0"></div>
+        <div class="skeleton1" style="width:40%;height:16px;"></div>
+      </div>
+    `;
+    }
+}

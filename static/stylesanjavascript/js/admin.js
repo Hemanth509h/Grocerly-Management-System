@@ -1,4 +1,59 @@
-﻿// Toast functionality
+﻿// --- Universal Internet Connection Monitor ---
+function showOfflineOverlay(message = "No Internet Connection") {
+    let overlay = document.getElementById("offline-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "offline-overlay";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "rgba(30,30,30,0.98)";
+        overlay.style.color = "#fff";
+        overlay.style.zIndex = "99999";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
+        overlay.style.fontSize = "2rem";
+        overlay.innerHTML = `<span style="font-size:3rem;margin-bottom:20px; color:#8affa3">&#9888;</span><div style=" color:#8affa3">${message}</div><div style="font-size:1rem;margin-top:20px; color:#8affa3">Please check your internet connection.</div>`;
+        document.body.appendChild(overlay);
+    } else {
+        overlay.style.display = "flex";
+    }
+    // Optionally, disable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = true;
+        el.style.pointerEvents = "none";
+    });
+}
+function hideOfflineOverlay() {
+    const overlay = document.getElementById("offline-overlay");
+    if (overlay) overlay.style.display = "none";
+    // Re-enable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = false;
+        el.style.pointerEvents = "";
+    });
+}
+function checkOnlineStatus() {
+    if (!navigator.onLine) {
+        showOfflineOverlay();
+    } else {
+        hideOfflineOverlay();
+    }
+}
+window.addEventListener('online',  checkOnlineStatus);
+window.addEventListener('offline', checkOnlineStatus);
+// On page load
+document.addEventListener("DOMContentLoaded", checkOnlineStatus);
+
+
+
+
+
+// Toast functionality
 function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
     const toastMessage = document.getElementById("toast-message");
@@ -247,13 +302,13 @@ function getusers(role) {
     const titleElement = document.getElementById("h1");
     formSearch.style.display = "flex";
 
-    List.innerHTML = "<p>Loading users...</p>";
     const titleMap = {
         customer: "Customers",
         distributor: "Distributors",
         admin: "Admins"
     };
     titleElement.innerText = titleMap[role] || "Users";
+    showProductSkeletons1()
     fetch("/admin/GetUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -311,7 +366,7 @@ function getusers(role) {
         })
         .catch((error) => {
             console.error("Error fetching users:", error);
-            List.innerHTML = "<p>Error loading users.</p>";
+            List.innerHTML = "<p style='color:red; text-align:center; font-size:20px;'>Error loading users.</p>";
         });
 }
 // delete user functionality
@@ -408,6 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastOrderCount = 0;
  //all orders functionality
    function fetchOrders() {
+            showProductSkeletons()
         fetch("/admin/get_orders", {
             method: "POST",
             headers: {
@@ -482,6 +538,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // todayorders functionality
     function todayorders() {
+            showProductSkeletons()
         fetch("/admin/TodayOrders", {
             method: "POST",
             headers: {
@@ -638,6 +695,8 @@ document.getElementById("logout-link").addEventListener("click", function () {
     const complaintList = document.getElementById("order-list");
     complaintsButton.addEventListener("click", async () => {
         complaintList.innerHTML = ""; // Clear list before adding new content
+    showProductSkeletons1()
+
         try {
             const response = await fetch("/admin/get_complaints", {
                 method: "POST",
@@ -651,6 +710,7 @@ document.getElementById("logout-link").addEventListener("click", function () {
                 showToast("Failed to fetch complaints: " + (data.message || ""), "error");
                 return;
             }
+            document.getElementById("order-list").innerHTML = "";
             const complaints = data.complaints || [];
             // Add heading
             const heading = document.getElementById("h1");
@@ -739,4 +799,29 @@ const orderList = document.getElementById("order-list");
 
 
 
-
+function showProductSkeletons() {
+    const area = document.getElementById("order-list");
+    area.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+        area.innerHTML += `
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton" style="width:70%;height:22px;margin:8px 0"></div>
+        <div class="skeleton" style="width:40%;height:16px;"></div>
+      </div>
+    `;
+    }
+}
+function showProductSkeletons1() {
+    const area = document.getElementById("order-list");
+    area.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+        area.innerHTML += `
+      <div class="product-skeleton1">
+        <div class="skeleton1 skeleton-img1"></div>
+        <div class="skeleton1" style="width:70%;height:22px;margin:8px 0"></div>
+        <div class="skeleton1" style="width:40%;height:16px;"></div>
+      </div>
+    `;
+    }
+}

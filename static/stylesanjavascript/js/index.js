@@ -1,4 +1,60 @@
-﻿// script.js
+﻿// --- Universal Internet Connection Monitor ---
+function showOfflineOverlay(message = "No Internet Connection") {
+    let overlay = document.getElementById("offline-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "offline-overlay";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.background = "rgba(30,30,30,0.98)";
+        overlay.style.color = "#fff";
+        overlay.style.zIndex = "99999";
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
+        overlay.style.fontSize = "2rem";
+        overlay.innerHTML = `<span style="font-size:3rem;margin-bottom:20px; color:#8affa3">&#9888;</span><div style=" color:#8affa3">${message}</div><div style="font-size:1rem;margin-top:20px; color:#8affa3">Please check your internet connection.</div>`;
+        document.body.appendChild(overlay);
+    } else {
+        overlay.style.display = "flex";
+    }
+    // Optionally, disable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = true;
+        el.style.pointerEvents = "none";
+    });
+}
+function hideOfflineOverlay() {
+    const overlay = document.getElementById("offline-overlay");
+    if (overlay) overlay.style.display = "none";
+    // Re-enable all forms and buttons
+    document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
+        el.disabled = false;
+        el.style.pointerEvents = "";
+    });
+}
+function checkOnlineStatus() {
+    if (!navigator.onLine) {
+        showOfflineOverlay();
+    } else {
+        hideOfflineOverlay();
+    }
+}
+window.addEventListener('online',  checkOnlineStatus);
+window.addEventListener('offline', checkOnlineStatus);
+// On page load
+document.addEventListener("DOMContentLoaded", checkOnlineStatus);
+
+
+
+
+
+
+// script.js
 document.addEventListener("DOMContentLoaded", function () {
     const roleSelect = document.getElementById("loginRole");
     const pincodeGroup = document.getElementById("pincode-group");
@@ -355,6 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //getProducts
     getProducts("Fresh_Produce");
     function getProducts(category) {
+        showProductSkeletons();
         fetch("/index/GetProducts", {
             method: "POST",
             headers: {
@@ -765,6 +822,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             fetch("/index/orders", {
+                
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -857,3 +915,18 @@ document.addEventListener("DOMContentLoaded", function () {
             searchbox.classList.add("blurred");
         }
     });
+
+
+    function showProductSkeletons() {
+  const area = document.getElementById("dispalyproducts");
+  area.innerHTML = "";
+  for (let i = 0; i < 6; i++) {
+    area.innerHTML += `
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton" style="width:70%;height:22px;margin:8px 0"></div>
+        <div class="skeleton" style="width:40%;height:16px;"></div>
+      </div>
+    `;
+  }
+}

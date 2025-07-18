@@ -19,6 +19,37 @@
     --gradient: linear-gradient(270deg, #121212, #272727, #121212);
 }
 
+.skeleton {
+  border-radius: 30px;
+  min-height: 16px;
+  width: 100%;
+  background: var(--gradient);
+    background-size: 600% 600%;
+  animation: skeleton-loading 1.5s linear infinite alternate;
+}
+.skeleton-img {
+  width: 245px;
+  height: 325px;
+  background: var(--gradient);
+  border-radius: 30px;
+    background-size: 600% 600%;
+  animation: skeleton-loading 1.5s linear infinite alternate;
+}
+@keyframes skeleton-loading {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -62,6 +93,7 @@ body {
     padding: 5px;
     border-radius: 20px;
     margin-top: 30px;
+    border: 1px solid var(--primary-color);
 }
 
 input[type="checkbox"] {

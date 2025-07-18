@@ -231,6 +231,7 @@ button:active,
     padding: 5px;
     border-radius: 20px;
     margin-top: 30px;
+    border: 1px solid var(--primary-color);
 }
 
 input[type="checkbox"] {
