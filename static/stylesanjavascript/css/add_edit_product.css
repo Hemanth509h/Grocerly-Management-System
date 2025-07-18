@@ -230,7 +230,7 @@ button:active,
     align-items: center;
     padding: 5px;
     border-radius: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     border: 1px solid var(--primary-color);
 }
 
