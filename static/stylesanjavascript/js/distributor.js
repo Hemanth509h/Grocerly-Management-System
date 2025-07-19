@@ -60,9 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     let intervalId = null;
     document.getElementById("allorders").addEventListener("click", () => {
-        if (intervalId) clearInterval(intervalId);
         fetchOrders();
-        intervalId = setInterval(fetchOrders, 60000);
     });
     document.getElementById("todayorders").addEventListener("click", () => {
         if (intervalId) clearInterval(intervalId);
