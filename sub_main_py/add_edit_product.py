@@ -10,7 +10,7 @@ add_edit_product_bp = Blueprint('add_edit_product', __name__)
 app = Flask(__name__)
 app.secret_key = '123456789789456123'
 # MongoDB setup
-client = MongoClient("mongodb+srv://@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
+client = MongoClient("mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
 db = client["myLoginDatabase"]
 users_collection = db["users"]
 productDB = client["grocery_store"]

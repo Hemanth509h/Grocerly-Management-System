@@ -19,21 +19,23 @@
 }
 
 .skeleton {
-  border-radius: 30px;
-  min-height: 16px;
-  width: 100%;
-  background: var(--gradient);
+    border-radius: 30px;
+    min-height: 16px;
+    width: 100%;
+    background: var(--gradient);
     background-size: 600% 600%;
-  animation: skeleton-loading 1.5s linear infinite alternate;
+    animation: skeleton-loading 1.5s linear infinite alternate;
 }
+
 .skeleton-img {
-  width: 245px;
-  height: 325px;
-  background: var(--gradient);
-  border-radius: 30px;
+    width: 245px;
+    height: 325px;
+    background: var(--gradient);
+    border-radius: 30px;
     background-size: 600% 600%;
-  animation: skeleton-loading 1.5s linear infinite alternate;
+    animation: skeleton-loading 1.5s linear infinite alternate;
 }
+
 @keyframes skeleton-loading {
     0% {
         background-position: 0% 50%;
@@ -191,6 +193,40 @@ nav ul li a:hover {
 #cart:hover #Cartnumber {
     animation: bounce 1s;
 }
+
+.cart-summary {
+    position: fixed;
+    top: 165px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+    background: var(--bg-color);
+    padding: 5px;
+    border-radius: 16px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-right-color: blue;
+    border: 1px solid var(--border-color-for-nav);
+}
+
+.total-orders1 {
+    margin-left: 8px;
+
+}
+
+a#cart-summary-link {
+    display: flex;
+    align-items: center;
+    color: var(--primary-color);
+    flex-direction: column;
+}
+
+svg#cart-icon {
+    background: var(--primary-color);
+    border-radius: 50px;
+}
+
+
 
 /* Updated "links-in-profileicon" styling */
 .links-in-profileicon {
@@ -1196,7 +1232,7 @@ input#close-contact-section {
 
 /* Media queries */
 @media (max-width: 768px) {
-    
+
     .nav-links {
         display: none;
     }
@@ -1214,7 +1250,7 @@ input#close-contact-section {
         margin-bottom: 10px;
     }
 
- 
+
     .product-categery {
         margin-bottom: 0px;
     }

@@ -9,7 +9,7 @@ import bcrypt
 
 forgotpassword_bp = Blueprint('forgotpassword', __name__)
 
-client = MongoClient("mongodb+srv://@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
+client = MongoClient("mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
 db = client["myLoginDatabase"]
 users_collection = db["users"]
 
