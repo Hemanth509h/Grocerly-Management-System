@@ -22,21 +22,21 @@ function showOfflineOverlay(message = "No Internet Connection") {
     } else {
         overlay.style.display = "flex";
     }
-    // Optionally, disable all forms and buttons
     document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
         el.disabled = true;
         el.style.pointerEvents = "none";
     });
 }
+
 function hideOfflineOverlay() {
     const overlay = document.getElementById("offline-overlay");
     if (overlay) overlay.style.display = "none";
-    // Re-enable all forms and buttons
     document.querySelectorAll("input, button, select, textarea, a").forEach(el => {
         el.disabled = false;
         el.style.pointerEvents = "";
     });
 }
+
 function checkOnlineStatus() {
     if (!navigator.onLine) {
         showOfflineOverlay();
@@ -44,17 +44,29 @@ function checkOnlineStatus() {
         hideOfflineOverlay();
     }
 }
+
 window.addEventListener('online', checkOnlineStatus);
 window.addEventListener('offline', checkOnlineStatus);
-// On page load
 document.addEventListener("DOMContentLoaded", checkOnlineStatus);
 
+// Universal Modal Functions
+function openModal(modal) {
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add("show");
+    }, 10);
 
+   
+}
 
+function closeModal(modal) {
+    modal.classList.remove("show");
+    setTimeout(() => {
+        modal.style.display = "none";
+    }, 300);
 
+}
 
-
-// script.js
 document.addEventListener("DOMContentLoaded", function () {
     const roleSelect = document.getElementById("loginRole");
     const pincodeGroup = document.getElementById("pincode-group");
@@ -116,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loadingIcon.style.display = "none";
 
             if (data.success) {
-                document.getElementById("admincode").value = ""; // Clear the input field
+                document.getElementById("admincode").value = "";
                 showToast("Admin pin verified successfully!");
                 admincodeGroup.style.display = "none";
                 useroremailingroup.style.display = "block";
@@ -140,14 +152,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     productCategories.forEach((category) => {
         category.addEventListener("click", function () {
-            // Remove active class from all
             productCategories.forEach((cat) => cat.classList.remove("active"));
-            // Add active class to the clicked one
             this.classList.add("active");
 
-            // Ensure the radio input inside is checked
             const radio = this.querySelector("input[type='radio']");
-
             if (radio) {
                 radio.checked = true;
                 const selectedValue = radio.value;
@@ -157,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Toast message
 function showToast(message, type = "success") {
     const toast = document.getElementById("toast");
     const toastMessage = document.getElementById("toast-message");
@@ -170,20 +177,14 @@ function showToast(message, type = "success") {
     }, 5000);
 }
 
-//login script
+// Login Modal
 const loginLink = document.getElementById("login-link");
 const loginContainer = document.querySelector(".login-container");
 
 if (loginLink) {
-    loginLink.addEventListener("click", () => {
-        event.preventDefault();
-        loginContainer.style.display = "block";
-        loginContainer.style.animation = "";
-        setTimeout(() => {
-            loginContainer.style.opacity = "1";
-            loginContainer.style.transform = "translate(-50%, -50%) scale(1)";
-            loginContainer.classList.add("show");
-        }, 10);
+    loginLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(loginContainer);
     });
 }
 
@@ -204,9 +205,8 @@ document.getElementById("login-form").addEventListener("submit", function (event
         return;
     }
 
-    document.getElementById("loading-icon1").style.display = "block"; // Show loading icon
+    document.getElementById("loading-icon1").style.display = "block";
 
-    // Prepare JSON payload
     const payload = JSON.stringify({
         pincode: pincode,
         useroremailin: userInput,
@@ -224,13 +224,12 @@ document.getElementById("login-form").addEventListener("submit", function (event
         .then((response) => response.json())
         .then((login) => {
             document.getElementById("loading-icon1").style.display = "none";
-            showToast(login.message, login.status); // Show toast message
+            showToast(login.message, login.status);
 
             if (login.status === "success") {
                 document.getElementById("login-form").reset();
-                loginContainer.style.display = "none";
+                closeModal(loginContainer);
 
-                // Clear inputs
                 document.getElementById("useroremailin").value = "";
                 document.getElementById("passin").value = "";
 
@@ -248,50 +247,40 @@ document.getElementById("login-form").addEventListener("submit", function (event
             showToast("For a time we can not complete this request. Please try again later.", "error");
             document.getElementById("loading-icon1").style.display = "none";
         });
-
 });
 
 document.getElementById("close-login").addEventListener("click", () => {
-    loginContainer.style.opacity = "0";
-    loginContainer.style.transform = "translate(-50%, -50%) scale(0.9)";
-    setTimeout(() => {
-        loginContainer.style.display = "none";
-    }, 300);
+    closeModal(loginContainer);
 });
 
+loginContainer.addEventListener("click", (e) => {
+    if (e.target === loginContainer) {
+        closeModal(loginContainer);
+    }
+});
+
+// Register Modal
+const registerLink = document.getElementById("register-link");
 const registerLink1 = document.getElementById("register-link1");
+const registerContainer = document.querySelector(".register-container");
+
+if (registerLink) {
+    registerLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(registerContainer);
+    });
+}
+
 if (registerLink1) {
-    registerLink1.addEventListener("click", () => {
-        event.preventDefault();
-        loginContainer.style.opacity = "0";
-        loginContainer.style.transform = "translate(-50%, -50%) scale(0.9)";
+    registerLink1.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeModal(loginContainer);
         setTimeout(() => {
-            loginContainer.style.display = "none";
-            registerContainer.style.display = "block";
-            setTimeout(() => {
-                registerContainer.style.opacity = "1";
-                registerContainer.style.transform = "translate(-50%, -50%) scale(1)";
-            }, 10);
+            openModal(registerContainer);
         }, 300);
     });
 }
 
-//register script
-const registerLink = document.getElementById("register-link");
-const registerContainer = document.querySelector(".register-container");
-
-if (registerLink) {
-    registerLink.addEventListener("click", () => {
-        event.preventDefault();
-        registerContainer.style.display = "block";
-        registerContainer.style.animation = "";
-        setTimeout(() => {
-            registerContainer.style.opacity = "1";
-            registerContainer.style.transform = "translate(-50%, -50%) scale(1)";
-            registerContainer.classList.add("show");
-        }, 10);
-    });
-}
 const registerForm = document.getElementById("sign-up-1");
 
 registerForm.addEventListener("submit", function (event) {
@@ -313,7 +302,6 @@ registerForm.addEventListener("submit", function (event) {
         showToast("Please enter your Full Name", "error");
         return;
     }
-
     if (username === "") {
         showToast("Please enter your username", "error");
         return;
@@ -335,9 +323,8 @@ registerForm.addEventListener("submit", function (event) {
         return;
     }
 
-    document.getElementById("loading-icon2").style.display = "block"; // Show loading icon
+    document.getElementById("loading-icon2").style.display = "block";
 
-    // Prepare JSON payload matching the C# keys expected in Register()
     const payload = {
         registerfullname: fullname,
         registerUsername: username,
@@ -346,6 +333,7 @@ registerForm.addEventListener("submit", function (event) {
         password2: password2,
         role: "customer",
     };
+
     fetch("/index/Register", {
         method: "POST",
         headers: {
@@ -364,27 +352,29 @@ registerForm.addEventListener("submit", function (event) {
 
             if (result.status === "success") {
                 document.getElementById("sign-up-1").reset();
-                registerContainer.style.display = "none";
-                loginContainer.style.display = "block";
+                closeModal(registerContainer);
+                openModal(loginContainer);
             }
         });
 });
 
 const closeRegisterButton = document.getElementById("close-register");
 closeRegisterButton.addEventListener("click", () => {
-    registerContainer.style.opacity = "0";
-    registerContainer.style.transform = "translate(-50%, -50%) scale(0.9)";
-    setTimeout(() => {
-        registerContainer.style.display = "none";
-    }, 300);
+    closeModal(registerContainer);
 });
 
-//Logout
+registerContainer.addEventListener("click", (e) => {
+    if (e.target === registerContainer) {
+        closeModal(registerContainer);
+    }
+});
+
+// Logout
 const logoutLink = document.getElementById("logout-link");
 if (logoutLink) {
     logoutLink.addEventListener("click", () => {
         fetch("/logout", {
-            method: "GET",  // Use GET since your Flask logout route is GET
+            method: "GET",
         })
             .then((response) => {
                 if (response.headers.get("content-type")?.includes("application/json")) {
@@ -394,7 +384,6 @@ if (logoutLink) {
                 }
             })
             .then((result) => {
-                // No need to JSON.parse result.d
                 showToast(result.message, result.status);
                 if (result.status === "success") {
                     setTimeout(() => location.reload(), 1000);
@@ -407,9 +396,9 @@ if (logoutLink) {
     });
 }
 
-
-//getProducts
+// Products
 getProducts("Fresh_Produce");
+
 function getProducts(category) {
     showProductSkeletons();
     fetch("/index/GetProducts", {
@@ -452,17 +441,16 @@ function getProducts(category) {
         });
 }
 
-
-
 const quantities = {};
 const productData = {};
 
 function updateQuantity(productName, change) {
     const span = document.getElementById(`quantity-${productName}`);
     let quantity = parseInt(span.textContent);
-    quantity = Math.max(0, quantity + change); // prevent negative
+    quantity = Math.max(0, quantity + change);
     span.textContent = quantity;
 }
+
 window.updateQuantity = function (productName, change) {
     if (!quantities[productName]) {
         quantities[productName] = 0;
@@ -476,15 +464,13 @@ window.updateQuantity = function (productName, change) {
         showToast(`${productName} removed from cart`, "error");
     }
 };
+
 function updateCartNumber() {
     const totalQuantity = Object.values(quantities).reduce((total, qty) => total + qty, 0);
     document.getElementById("Cartnumber").innerText = totalQuantity;
     document.getElementById('total-orders').textContent = totalQuantity;
-
 }
 
-
-//search products
 function searchProducts() {
     const query = document.getElementById("searchBox").value.trim().toLowerCase();
 
@@ -526,8 +512,7 @@ function searchProducts() {
         });
 }
 
-//Cart modal
-
+// Cart Modal
 const cartButton = document.getElementById("cart");
 const cartbutton = document.getElementById("cart-summary-link");
 const cartModal = document.getElementById("cart-modal");
@@ -536,26 +521,16 @@ const clearCartButton = document.getElementById("clear-cart");
 const checkoutButton = document.getElementById("checkout");
 
 function toggleCartModal() {
-    if (cartModal.style.display === "block") {
-        cartModal.classList.remove("show");
-        cartModal.style.animation = "fadeOutDown 0.4s forwards";
-        setTimeout(() => {
-            cartModal.style.display = "none";
-            cartModal.style.animation = "";
-        }, 350);
+    if (cartModal.classList.contains("show")) {
+        closeModal(cartModal);
     } else {
-        cartModal.style.display = "block";
-        cartModal.style.animation = "";
-        setTimeout(() => {
-            cartModal.classList.add("show");
-        }, 10);
+        openModal(cartModal);
         displayCartItems();
     }
 }
 
 cartButton.addEventListener("click", toggleCartModal);
 cartbutton.addEventListener("click", toggleCartModal);
-
 
 function toggleCartSummary() {
     const cartsymbol = document.querySelector(".cart-summary");
@@ -565,8 +540,6 @@ function toggleCartSummary() {
 }
 
 window.addEventListener("resize", toggleCartSummary);
-
-
 
 function displayCartItems() {
     const cartItemsContainer = document.getElementById("cart-items");
@@ -594,12 +567,13 @@ function displayCartItems() {
 }
 
 closeCartButton.addEventListener("click", () => {
-    cartModal.style.animation = "fadeOutDown 0.4s forwards";
-    setTimeout(() => {
-        cartModal.classList.remove("show");
-        cartModal.style.display = "none";
-        cartModal.style.animation = "";
-    }, 350);
+    closeModal(cartModal);
+});
+
+cartModal.addEventListener("click", (e) => {
+    if (e.target === cartModal) {
+        closeModal(cartModal);
+    }
 });
 
 clearCartButton.addEventListener("click", () => {
@@ -611,9 +585,8 @@ clearCartButton.addEventListener("click", () => {
     showToast("Cart cleared successfully!", "success");
 });
 
-// Checkout modal
+// Checkout Modal
 const radios = document.querySelectorAll("#credit-card, #cash-on-delivery, #net-banking, #upi");
-
 radios.forEach((radio) => {
     radio.disabled = false;
     radio.style.display = "inline-block";
@@ -630,26 +603,13 @@ checkoutButton.addEventListener("click", async () => {
 
         if (data.status === "error" && data.message === "User is not logged in.") {
             showToast("Please login to proceed with checkout.", "error");
-            cartModal.classList.remove("show");
-            cartModal.style.animation = "fadeOutDown 0.4s forwards";
-            setTimeout(() => {
-                cartModal.style.display = "none";
-                cartModal.style.animation = "";
-            }, 350);
-            loginContainer.style.display = "block";
-            setTimeout(() => {
-                loginContainer.style.opacity = "1";
-                loginContainer.style.transform = "translate(-50%, -50%) scale(1)";
-            }, 10);
+            closeModal(cartModal);
+            openModal(loginContainer);
             return;
         }
 
         if (Object.values(quantities).some((quantity) => quantity > 0)) {
-            checkoutModal.style.display = "block";
-            checkoutModal.style.animation = "";
-            setTimeout(() => {
-                checkoutModal.classList.add("show");
-            }, 10);
+            openModal(checkoutModal);
         } else {
             showToast("Your cart is empty. Add items to proceed.", "error");
         }
@@ -661,12 +621,13 @@ checkoutButton.addEventListener("click", async () => {
 });
 
 closeCheckoutButton.addEventListener("click", () => {
-    checkoutModal.style.animation = "fadeOutUp 0.4s forwards";
-    setTimeout(() => {
-        checkoutModal.classList.remove("show");
-        checkoutModal.style.display = "none";
-        checkoutModal.style.animation = "";
-    }, 350);
+    closeModal(checkoutModal);
+});
+
+checkoutModal.addEventListener("click", (e) => {
+    if (e.target === checkoutModal) {
+        closeModal(checkoutModal);
+    }
 });
 
 confirmOrderButton.addEventListener("click", () => {
@@ -675,11 +636,11 @@ confirmOrderButton.addEventListener("click", () => {
     const pincode = document.getElementById("pincode1").value.trim();
     const paymentOptionElement = document.querySelector('input[name="payment"]:checked');
     const paymentOption = paymentOptionElement ? paymentOptionElement.value : null;
+
     if (address === "") {
         showToast("Please enter your address.", "error");
         return;
     }
-
     if (phoneNumber === "") {
         showToast("Please enter your phone number.", "error");
         return;
@@ -700,6 +661,7 @@ confirmOrderButton.addEventListener("click", () => {
         showToast("Please select a payment option.", "error");
         return;
     }
+
     const orderDetails = {
         address: address,
         phone_number: phoneNumber,
@@ -721,20 +683,13 @@ confirmOrderButton.addEventListener("click", () => {
             const placeOrder = data;
             showToast(placeOrder.message, placeOrder.status);
             if (placeOrder.status === "success") {
-
                 Object.keys(quantities).forEach((productName) => {
                     quantities[productName] = 0;
                 });
                 updateCartNumber();
                 displayCartItems();
-                checkoutModal.classList.remove("show");
-                setTimeout(() => {
-                    checkoutModal.style.display = "none";
-                }, 300);
-                cartModal.classList.remove("show");
-                setTimeout(() => {
-                    cartModal.style.display = "none";
-                }, 300);
+                closeModal(checkoutModal);
+                closeModal(cartModal);
             }
         })
         .catch((error) => {
@@ -743,45 +698,34 @@ confirmOrderButton.addEventListener("click", () => {
         });
 });
 
-
+// Contact Modal
 const contactLink = document.getElementById("contact-link");
 const contactSection = document.getElementById("contact-section");
 const closeContactSectionBtn = document.getElementById("close-contact-section");
-
 const showFormBtn = document.getElementById("show-contact-form");
 const formContainer = document.getElementById("complaint-form-container");
 const closeFormBtn = document.getElementById("close-contact");
 const form = document.getElementById("contact-form");
 const loadingIcon = document.getElementById("loading-icon3");
 
-// Show/hide contact section
 contactLink?.addEventListener("click", () => {
-    if (contactSection.style.display === "block") {
-        contactSection.classList.remove("show");
-        contactSection.style.animation = "fadeOutRight 0.4s forwards";
-        setTimeout(() => {
-            contactSection.style.display = "none";
-            contactSection.style.animation = "";
-        }, 350);
+    if (contactSection.classList.contains("show")) {
+        closeModal(contactSection);
     } else {
-        contactSection.style.display = "block";
-        contactSection.style.animation = "";
-        setTimeout(() => {
-            contactSection.classList.add("show");
-        }, 10);
+        openModal(contactSection);
     }
 });
 
 closeContactSectionBtn.addEventListener("click", () => {
-    contactSection.style.animation = "fadeOutRight 0.4s forwards";
-    setTimeout(() => {
-        contactSection.classList.remove("show");
-        contactSection.style.display = "none";
-        contactSection.style.animation = "";
-    }, 350);
+    closeModal(contactSection);
 });
 
-// Show/hide complaint form
+contactSection.addEventListener("click", (e) => {
+    if (e.target === contactSection) {
+        closeModal(contactSection);
+    }
+});
+
 showFormBtn.addEventListener("click", () => {
     formContainer.style.display = "block";
 });
@@ -790,7 +734,6 @@ closeFormBtn.addEventListener("click", () => {
     formContainer.style.display = "none";
 });
 
-// Submit complaint form
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
     loadingIcon.style.display = "inline-block";
@@ -799,7 +742,6 @@ form.addEventListener("submit", async (e) => {
     const email = document.getElementById("contact-email").value.trim();
     const message = document.getElementById("message").value.trim();
     const orderid = document.getElementById("orderid").value.trim();
-
 
     const response = await fetch('/index/submitComplaint', {
         method: 'POST',
@@ -815,13 +757,14 @@ form.addEventListener("submit", async (e) => {
     }
 });
 
-
-
-
-//Order
+// Order Modal
 const orderLink = document.getElementById("orders-link");
 const orderSection = document.getElementById("order-section");
 const orderList = document.getElementById("order-list");
+const cancelOrderModal = document.getElementById("cancel-order-modal");
+const cancelOrderForm = document.getElementById("cancel-order-form");
+const closeCancelModal = document.getElementById("close-cancel-modal");
+let currentOrderIdToCancel = null;
 
 if (orderLink) {
     orderLink.addEventListener("click", async () => {
@@ -831,11 +774,7 @@ if (orderLink) {
 
             if (data.status === "error" && data.message === "User is not logged in.") {
                 showToast("Please login to see your orders.", "error");
-                loginContainer.style.display = "block";
-                setTimeout(() => {
-                    loginContainer.style.opacity = "1";
-                    loginContainer.style.transform = "translate(-50%, -50%) scale(1)";
-                }, 10);
+                openModal(loginContainer);
                 return;
             }
         } catch (err) {
@@ -843,10 +782,7 @@ if (orderLink) {
             showToast("Something went wrong. Please try again later.", "error");
         }
 
-
-
         fetch("/index/orders", {
-
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -855,12 +791,19 @@ if (orderLink) {
         })
             .then((response) => response.json())
             .then((data) => {
-
-                const result = data.orders; // assuming orders is an array
+                const result = data.orders;
                 orderList.innerHTML = "";
                 result.reverse().forEach((order) => {
                     const orderDiv = document.createElement("div");
                     orderDiv.className = "order-item order-animated";
+
+                    const canCancel = order.status === "Pending" || order.status === "Packing";
+                    const cancelButtonHtml = order.status !== "Order Completed" && order.status !== "Out for Deliverys" 
+                        ? `<button class="cancel-order-btn" data-order-id="${order._id}" ${!canCancel ? 'disabled' : ''}>
+                            ${canCancel ? 'Cancel Order' : 'Cannot Cancel'}
+                           </button>`
+                        : '';
+
                     orderDiv.innerHTML = `
                 <h3>Order ID: ${order._id}</h3>
                 <p>Date: ${new Date(order.orderDate).toLocaleString()}</p>
@@ -872,6 +815,7 @@ if (orderLink) {
                 <p>Address: ${order.address}</p>
                 <p>Pincode: ${order.pincode}</p>
                 <p>Payment Option: ${order.paymentOption}</p>
+                ${order.cancelReason ? `<p><strong>Cancel Reason:</strong> ${order.cancelReason}</p>` : ''}
                 <div class="order-items">
                     ${order.items
                             ? Object.keys(order.items)
@@ -883,6 +827,7 @@ if (orderLink) {
                             : ""
                         }
                 </div>
+                ${cancelButtonHtml}
             `;
                     orderList.appendChild(orderDiv);
                 });
@@ -894,17 +839,10 @@ if (orderLink) {
                     orderList.appendChild(noOrdersDiv);
                 }
 
-                if (orderSection.style.display === "block") {
-                    orderSection.classList.remove("show");
-                    setTimeout(() => {
-                        orderSection.style.display = "none";
-                    }, 300);
+                if (orderSection.classList.contains("show")) {
+                    closeModal(orderSection);
                 } else {
-                    orderSection.style.display = "block";
-                    orderSection.style.animation = "";
-                    setTimeout(() => {
-                        orderSection.classList.add("show");
-                    }, 10);
+                    openModal(orderSection);
                 }
             })
             .catch((error) => {
@@ -915,16 +853,83 @@ if (orderLink) {
         const closeOrdersButton = document.getElementById("close-orders");
         if (closeOrdersButton) {
             closeOrdersButton.addEventListener("click", () => {
-                orderSection.style.animation = "flipOut 0.5s forwards";
-                setTimeout(() => {
-                    orderSection.classList.remove("show");
-                    orderSection.style.display = "none";
-                    orderSection.style.animation = "";
-                }, 450);
+                closeModal(orderSection);
             });
         }
+
+        orderSection.addEventListener("click", (e) => {
+            if (e.target === orderSection) {
+                closeModal(orderSection);
+            }
+        });
     });
 }
+
+// Cancel Order Modal
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("cancel-order-btn") && !e.target.disabled) {
+        currentOrderIdToCancel = e.target.getAttribute("data-order-id");
+        openModal(cancelOrderModal);
+    }
+});
+
+closeCancelModal.addEventListener("click", () => {
+    closeModal(cancelOrderModal);
+    document.getElementById("cancel-reason").value = "";
+    currentOrderIdToCancel = null;
+});
+
+cancelOrderModal.addEventListener("click", (e) => {
+    if (e.target === cancelOrderModal) {
+        closeModal(cancelOrderModal);
+        document.getElementById("cancel-reason").value = "";
+        currentOrderIdToCancel = null;
+    }
+});
+
+cancelOrderForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const cancelReason = document.getElementById("cancel-reason").value.trim();
+
+    if (!cancelReason) {
+        showToast("Please provide a cancellation reason.", "error");
+        return;
+    }
+
+    if (!currentOrderIdToCancel) {
+        showToast("No order selected for cancellation.", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch("/index/cancel_order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                orderId: currentOrderIdToCancel,
+                cancelReason: cancelReason
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+            showToast("Order cancelled successfully!", "success");
+            closeModal(cancelOrderModal);
+            document.getElementById("cancel-reason").value = "";
+            currentOrderIdToCancel = null;
+            document.getElementById("orders-link").click();
+        } else {
+            showToast(data.message || "Failed to cancel order.", "error");
+        }
+    } catch (error) {
+        console.error("Error cancelling order:", error);
+        showToast("An error occurred while cancelling the order.", "error");
+    }
+});
 
 const container = document.getElementById("selectedProducts");
 const header = document.getElementById("selectedproductsname");
@@ -939,7 +944,6 @@ container.addEventListener("scroll", () => {
         searchbox.classList.add("blurred");
     }
 });
-
 
 function showProductSkeletons() {
     const area = document.getElementById("dispalyproducts");

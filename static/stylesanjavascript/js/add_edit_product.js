@@ -171,7 +171,6 @@ async function searchProducts() {
                 <p>Price: ₹${product.price}</p>
                 <p>Description: ${product.description}</p>
                 <button class="edit-button" onclick='editProduct(${JSON.stringify(product)})'>Edit</button>
-                <button onclick='deleteProduct(${JSON.stringify(product)})'>Delete</button>
         `;
         searchResults.appendChild(productDiv);
     });
