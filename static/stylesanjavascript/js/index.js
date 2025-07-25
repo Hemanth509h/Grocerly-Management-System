@@ -259,6 +259,30 @@ loginContainer.addEventListener("click", (e) => {
     }
 });
 
+
+document.getElementById("next").addEventListener("click", () => {
+    const fullnameGroup = document.getElementById("fullnamegroup");
+    const usernamegroup = document.getElementById("usernamegroup");
+    const emailgroup = document.getElementById("emailgroup");
+    const pass1group = document.getElementById("pass1group");
+    const pass2group = document.getElementById("pass2group");
+    const next =document.getElementById("next");
+    const btn =document.getElementById("btn")
+
+   
+        fullnameGroup.style.display = "none";
+        usernamegroup.style.display = "none";
+        emailgroup.style.display = "none";
+        pass1group.style.display = "block";
+        pass2group.style.display = "block";
+        next.style.display = "none";
+        btn.style.display = "block";
+
+    
+
+    
+});
+
 // Register Modal
 const registerLink = document.getElementById("register-link");
 const registerLink1 = document.getElementById("register-link1");
@@ -281,9 +305,9 @@ if (registerLink1) {
     });
 }
 
-const registerForm = document.getElementById("sign-up-1");
+const registerForm = document.getElementById("btn");
 
-registerForm.addEventListener("submit", function (event) {
+registerForm.addEventListener("click", function (event) {
     event.preventDefault();
 
     const fullnameElement = document.getElementById("register-fullname");

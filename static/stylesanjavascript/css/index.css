@@ -719,7 +719,8 @@ input[type="submit"],
 #close-login,
 #close-orders,
 #close-register,
-#checkadminpin {
+#checkadminpin,
+#next {
     padding: 12px 20px;
     font-size: 18px;
     border: none;
@@ -735,7 +736,8 @@ input[type="submit"]:hover,
 #close-login:hover,
 #close-orders:hover,
 #close-register:hover,
-#checkadminpin:hover {
+#checkadminpin:hover,
+#next:hover {
     background-color: var(--primary-color-dark);
     transform: scale(1.05);
 }
@@ -745,7 +747,8 @@ input[type="submit"]:active,
 #close-login:active,
 #close-orders:active,
 #close-register:active,
-#checkadminpin:active {
+#checkadminpin:active,
+#next:active {
     background-color: var(--primary-color-darker);
     transform: scale(0.95);
 }
