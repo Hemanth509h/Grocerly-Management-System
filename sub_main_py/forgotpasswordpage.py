@@ -4,14 +4,11 @@ import time
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 import bcrypt
+from sub_main_py.db import *
 
 
 
 forgotpassword_bp = Blueprint('forgotpassword', __name__)
-
-client = MongoClient("mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
-db = client["myLoginDatabase"]
-users_collection = db["users"]
 
 
 # Route to render the Forgot Password page

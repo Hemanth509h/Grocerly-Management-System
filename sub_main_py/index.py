@@ -5,20 +5,11 @@ import json
 import datetime
 from flask import Blueprint
 from bson import ObjectId
+from sub_main_py.db import *
 
 index_bp = Blueprint('index', __name__)
 app = Flask(__name__)
 app.secret_key = "123456789789456123"
-# MongoDB setup
-client = MongoClient(
-    "mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data"
-)
-db = client["myLoginDatabase"]
-productDB = client["grocery_store"]
-users_collection = db["users"]
-orders_collection = db["Orders"]
-complaints_collection = db["Complaints"]
-adminpin = db["admins"]
 
 
 # --------- ROUTES ---------
