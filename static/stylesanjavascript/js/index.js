@@ -422,6 +422,12 @@ if (logoutLink) {
 
 // Products
 getProducts("Fresh_Produce");
+// ...existing code...
+
+function hideProductSkeletons() {
+    const area = document.getElementById("dispalyproducts");
+    area.innerHTML = "";
+}
 
 function getProducts(category) {
     showProductSkeletons();
@@ -435,11 +441,12 @@ function getProducts(category) {
         .then((response) => response.json())
         .then((data) => {
             if (data.status === "error") {
+                hideProductSkeletons();
                 showToast(data.message, "error");
                 return;
             }
             const products = data.products;
-            const selectedproductsname1 = (document.getElementById("selectedproductsname").innerHTML = category.replace(/_/g, " "));
+            document.getElementById("selectedproductsname").innerHTML = category.replace(/_/g, " ");
             const displayArea = document.getElementById("dispalyproducts");
             displayArea.innerHTML = "";
             products.forEach((product) => {
@@ -461,9 +468,13 @@ function getProducts(category) {
             });
         })
         .catch((error) => {
+            hideProductSkeletons();
+            showToast("Failed to load products. Please try again later.", "error");
             console.error("Error fetching products:", error);
         });
 }
+
+// ...existing code...
 
 const quantities = {};
 const productData = {};
