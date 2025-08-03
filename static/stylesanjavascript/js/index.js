@@ -733,6 +733,16 @@ confirmOrderButton.addEventListener("click", () => {
         });
 });
 
+document.addEventListener("DOMContentLoaded", async() => {
+    const reason = document.getElementById("reasonforpincodeselected");
+    const pincodeInput = document.getElementById("pincode1");
+    pincodeInput.addEventListener("input", async () => {
+        const response = await fetch(`/index/getPincodevaladiti/${pincodeInput.value.trim()}`);
+        const data = await response.json();
+        reason.innerText = data.message;
+    });
+});
+
 // Contact Modal
 const contactLink = document.getElementById("contact-link");
 const contactSection = document.getElementById("contact-section");

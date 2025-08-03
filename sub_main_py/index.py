@@ -180,6 +180,23 @@ def orders():
                        message="No orders found for this user.")
     return jsonify({'orders': userorders})
 
+@index_bp.route('/index/getPincodevaladiti/<pincode>', methods=['GET'])
+def get_pincode_validity(pincode):
+    if not pincode:
+        return jsonify(status="error", message="Pincode is required.")
+    distributor_count = users_collection.count_documents({
+        "role": "distributor",
+        "pincode": pincode
+    })
+    print(f"Distributor count for pincode {pincode}: {distributor_count}")
+    if distributor_count == 0:
+        return jsonify(message="No distributors available for this pincode.")
+    elif distributor_count < 3:
+        return jsonify( message="Limited distributors available for this pincode.")
+    if distributor_count >= 3:
+        return jsonify( message="Order is available for this pincode.")
+    else:
+        return jsonify(message="We cannot deliver to this pincode.")
 
 @index_bp.route('/index/placeorder', methods=['POST'])
 def place_order():

@@ -547,6 +547,11 @@ hr#profile-hr {
     transform: translateX(0) scale(1);
     opacity: 1;
 }
+#reasonforpincodeselected {
+    color: var(--primary-color);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
 
 /* Order Modal */
 .order-container {
