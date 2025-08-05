@@ -56,7 +56,7 @@ function openModal(modal) {
         modal.classList.add("show");
     }, 10);
 
-   
+
 }
 
 function closeModal(modal) {
@@ -266,21 +266,21 @@ document.getElementById("next").addEventListener("click", () => {
     const emailgroup = document.getElementById("emailgroup");
     const pass1group = document.getElementById("pass1group");
     const pass2group = document.getElementById("pass2group");
-    const next =document.getElementById("next");
-    const btn =document.getElementById("btn")
+    const next = document.getElementById("next");
+    const btn = document.getElementById("btn")
 
-   
-        fullnameGroup.style.display = "none";
-        usernamegroup.style.display = "none";
-        emailgroup.style.display = "none";
-        pass1group.style.display = "block";
-        pass2group.style.display = "block";
-        next.style.display = "none";
-        btn.style.display = "block";
 
-    
+    fullnameGroup.style.display = "none";
+    usernamegroup.style.display = "none";
+    emailgroup.style.display = "none";
+    pass1group.style.display = "block";
+    pass2group.style.display = "block";
+    next.style.display = "none";
+    btn.style.display = "block";
 
-    
+
+
+
 });
 
 // Register Modal
@@ -733,13 +733,39 @@ confirmOrderButton.addEventListener("click", () => {
         });
 });
 
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
     const reason = document.getElementById("reasonforpincodeselected");
     const pincodeInput = document.getElementById("pincode1");
     pincodeInput.addEventListener("input", async () => {
-        const response = await fetch(`/index/getPincodevaladiti/${pincodeInput.value.trim()}`);
-        const data = await response.json();
-        reason.innerText = data.message;
+        fetch(`/index/getPincodevaladiti/${pincode}`)
+            .then(response => response.json())
+            .then(data => {
+                const confirmBtn = document.getElementById("confirm-order");
+                reason.innerText = data.message;
+                if (data.status === "fail" || data.status === "limited") {
+                    confirmBtn.disabled = true;
+                    confirmBtn.innerHTML = 'Confirm Order';
+                    confirmBtn.style.color = "red";
+                    // Show X mark on hover
+                    confirmBtn.addEventListener("mouseenter", function showX() {
+                        confirmBtn.innerHTML = '✗ Confirm Order';
+                    });
+                    confirmBtn.addEventListener("mouseleave", function hideX() {
+                        confirmBtn.innerHTML = 'Confirm Order';
+                    });
+                } else {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = 'Confirm Order';
+                    confirmBtn.style.color = "";
+                    // Remove hover events if previously added
+                    confirmBtn.onmouseenter = null;
+                    confirmBtn.onmouseleave = null;
+                }
+
+            })
+            .catch(error => {
+                console.error("Error fetching pincode status:", error);
+            });
     });
 });
 
@@ -843,7 +869,7 @@ if (orderLink) {
                     orderDiv.className = "order-item order-animated";
 
                     const canCancel = order.status === "Pending" || order.status === "Packing";
-                    const cancelButtonHtml = order.status !== "Order Completed" && order.status !== "Out for Deliverys" 
+                    const cancelButtonHtml = order.status !== "Order Completed" && order.status !== "Out for Deliverys"
                         ? `<button class="cancel-order-btn" data-order-id="${order._id}" ${!canCancel ? 'disabled' : ''}>
                             ${canCancel ? 'Cancel Order' : 'Cannot Cancel'}
                            </button>`

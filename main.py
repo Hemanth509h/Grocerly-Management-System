@@ -10,11 +10,13 @@ app = Flask(__name__)
 app.secret_key = "123456789789456123"
 
 # Register Blueprints
-app.register_blueprint(index_bp, url_prefix="/index")
-app.register_blueprint(distributor_bp, url_prefix="/distributor")
-app.register_blueprint(admin_bp, url_prefix="/admin")
-app.register_blueprint(add_edit_product_bp, url_prefix="/add_edit_product")
-app.register_blueprint(forgotpassword_bp, url_prefix="/forgotpassword")
+app.register_blueprint(index_bp)
+app.register_blueprint(distributor_bp)
+app.register_blueprint(admin_bp)
+app.register_blueprint(add_edit_product_bp)
+app.register_blueprint(forgotpassword_bp)
+
+
 
 
 if __name__ == "__main__":
