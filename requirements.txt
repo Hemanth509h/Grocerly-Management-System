@@ -2,3 +2,5 @@ flask
 pymongo
 bcrypt
 pymongo
+flask
+pymongo
