@@ -1,7 +1,7 @@
 # db.py
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017")
+client = MongoClient("mongodb+srv://phemanthkumar746:htnameh509h@data.psr09.mongodb.net/?retryWrites=true&w=majority&appName=Data")
 main_db = client["myLoginDatabase"]
 productDB = client["grocery_store"]
 
